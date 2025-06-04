@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Mic, Upload, FileText, Clock, User, TrendingUp } from "lucide-react"
+import { Mic, Upload, TrendingUp } from "lucide-react"
 import AudioRecorder from "@/components/audio-recorder"
 import FileUpload from "@/components/file-upload"
 import NotesList from "@/components/notes-list"
@@ -35,11 +35,6 @@ export default function BrokerNotesApp() {
   }
 
   const recentNotes = notes.slice(0, 3)
-  const totalNotes = notes.length
-  const todayNotes = notes.filter((note) => {
-    const today = new Date().toDateString()
-    return new Date(note.createdAt).toDateString() === today
-  }).length
 
   return (
     <div className="min-h-screen bg-slate-50 p-4">
@@ -49,40 +44,6 @@ export default function BrokerNotesApp() {
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Reveal Whisper</h1>
         </div>
 
-        {/* Stats Cards */}
-        {/*
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Notes</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{totalNotes}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Today's Notes</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{todayNotes}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Clients</CardTitle>
-              <User className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {new Set(notes.map((note) => note.clientName).filter(Boolean)).size}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        */}
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

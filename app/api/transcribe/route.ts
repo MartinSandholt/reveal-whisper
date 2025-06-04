@@ -7,8 +7,8 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
     const audioFile = formData.get("audio") as File
-    const title = formData.get("title") as string
-    const clientName = formData.get("clientName") as string
+    //const title = formData.get("title") as string
+    //const clientName = formData.get("clientName") as string
 
     if (!audioFile) {
       return NextResponse.json({ error: "No audio file provided" }, { status: 400 })
@@ -46,13 +46,14 @@ Please format your response as JSON with the following structure:
     const analysisResult = await generateText({
       model: openai("gpt-4o-mini"),
       prompt: analysisPrompt,
-      temperature: 0.3,
+      temperature: 0.1,
     })
 
     let analysis
     try {
       analysis = JSON.parse(analysisResult.text)
     } catch (parseError) {
+      console.error("JSON parse error:", parseError)
       // Fallback if JSON parsing fails
       analysis = {
         summary: "Summary could not be generated automatically. Please review the transcript manually.",

@@ -46,7 +46,10 @@ export default function NotesList({ notes, onDeleteNote }: NotesListProps) {
               <Collapsible key={note.id}>
                 <Card className="border border-gray-200">
                   <CollapsibleTrigger asChild>
-                    <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors">
+                    <CardHeader
+                      className="cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => toggleExpanded(note.id)}
+                    >
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-2">
