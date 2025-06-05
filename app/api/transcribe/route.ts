@@ -3,6 +3,11 @@ import { generateText } from "ai"
 import { openai } from "@ai-sdk/openai"
 import { type NextRequest, NextResponse } from "next/server"
 
+type LLMAnalysis = {
+  summary: string;
+  followUpItems: string[];
+};
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
@@ -36,7 +41,7 @@ You are an AI assistant helping a broker analyze a conversation transcript. Plea
 Here is the transcript:
 ${transcript}
 
-Please format your response as JSON with the following structure:
+Always format your response as JSON with the following structure:
 {
   "summary": "Your summary here",
   "followUpItems": ["Item 1", "Item 2", "Item 3"]
@@ -49,14 +54,14 @@ Please format your response as JSON with the following structure:
       temperature: 0.1,
     })
 
-    let analysis
+    let analysis: LLMAnalysis
     try {
-      analysis = JSON.parse(analysisResult.text)
+      analysis = extractJsonFromLLMResponse(analysisResult.text)
     } catch (parseError) {
       console.error("JSON parse error:", parseError)
       // Fallback if JSON parsing fails
       analysis = {
-        summary: "Summary could not be generated automatically. Please review the transcript manually.",
+        summary: "Parsing did not work",
         followUpItems: ["Review transcript manually", "Follow up with client"],
       }
     }
@@ -70,4 +75,17 @@ Please format your response as JSON with the following structure:
     console.error("Error processing audio:", error)
     return NextResponse.json({ error: "Failed to process audio file" }, { status: 500 })
   }
+}
+
+function extractJsonFromLLMResponse(response: string): LLMAnalysis {
+  // Remove leading/trailing whitespace
+  let cleaned = response.trim();
+
+  // Remove code block markers (```json ... ```, ``` ... ```)
+  if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```[a-z]*\n?/i, '').replace(/```$/, '');
+  }
+
+  // Now parse as JSON
+  return JSON.parse(cleaned);
 }

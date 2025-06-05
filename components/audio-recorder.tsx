@@ -126,9 +126,7 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
   return (
     <div className="space-y-6">
       {/* Recording Controls */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex flex-col items-center space-y-4">
+      <div className="flex flex-col items-center space-y-4">
             <div className="flex items-center space-x-4">
               {!isRecording ? (
                 <Button onClick={startRecording} size="lg" className="bg-red-500 hover:bg-red-600 text-white">
@@ -150,8 +148,6 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
 
       {/* Audio Playback */}
       {audioUrl && (
