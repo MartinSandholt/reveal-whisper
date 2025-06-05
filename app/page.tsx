@@ -1,17 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Mic, Upload } from "lucide-react"
 import AudioRecorder from "@/components/audio-recorder"
-import FileUpload from "@/components/file-upload"
 import NotesList from "@/components/notes-list"
 import type { Note } from "@/types/note"
 
 export default function BrokerNotesApp() {
   const [notes, setNotes] = useState<Note[]>([])
-  const [activeTab, setActiveTab] = useState("record")
 
   useEffect(() => {
     // Load notes from localStorage on component mount

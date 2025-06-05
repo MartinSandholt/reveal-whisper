@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { ChevronDown, ChevronUp, Trash2, User, Calendar, FileText, CheckSquare } from "lucide-react"
+import { Trash2, User, Calendar, FileText, CheckSquare } from "lucide-react"
 import type { Note } from "@/types/note"
 
 interface NotesListProps {
@@ -33,15 +33,12 @@ export default function NotesList({ notes, onDeleteNote }: NotesListProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>All Notes</CardTitle>
-        <CardDescription>Your conversation transcripts and analysis</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <>
+    <h2 className="text-2xl font-bold mb-4">Meeting notes</h2>
+      <CardContent className="p-0">
         <div className="space-y-4">
           {notes.map((note) => {
-            const isExpanded = expandedNotes.has(note.id)
+            //const isExpanded = expandedNotes.has(note.id)
             return (
               <Collapsible key={note.id}>
                 <Card className="border border-gray-200">
@@ -54,24 +51,6 @@ export default function NotesList({ notes, onDeleteNote }: NotesListProps) {
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-2">
                             <CardTitle className="text-lg">{note.title || "Untitled Note"}</CardTitle>
-                            <div className="flex items-center space-x-2">
-                              <Button
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  handleDelete(note.id)
-                                }}
-                                variant="ghost"
-                                size="sm"
-                                className="text-red-500 hover:text-red-700"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                              {isExpanded ? (
-                                <ChevronUp className="h-5 w-5 text-gray-500" />
-                              ) : (
-                                <ChevronDown className="h-5 w-5 text-gray-500" />
-                              )}
-                            </div>
                           </div>
                           <div className="flex items-center space-x-4 text-sm text-gray-600">
                             <div className="flex items-center space-x-1">
@@ -130,6 +109,19 @@ export default function NotesList({ notes, onDeleteNote }: NotesListProps) {
                           </div>
                         </div>
                       </div>
+                      <div className="flex items-center space-x-2 mt-4">
+                              <Button
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  handleDelete(note.id)
+                                }}
+                                variant="ghost"
+                                size="sm"
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <Trash2 className="h-4 w-4" />Delete note
+                              </Button>
+                            </div>
                     </CardContent>
                   </CollapsibleContent>
                 </Card>
@@ -137,7 +129,7 @@ export default function NotesList({ notes, onDeleteNote }: NotesListProps) {
             )
           })}
         </div>
-      </CardContent>
-    </Card>
+    </CardContent>
+    </>
   )
 }

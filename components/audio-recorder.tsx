@@ -2,10 +2,8 @@
 
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mic, Square, Play, Pause, Loader2 } from "lucide-react"
+import { Mic, Play, Pause } from "lucide-react"
 import type { Note } from "@/types/note"
 
 interface AudioRecorderProps {
@@ -17,7 +15,7 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
-  const [isProcessing, setIsProcessing] = useState(false)
+  //const [setIsProcessing] = useState(false)
   const [title, setTitle] = useState("")
   const [clientName, setClientName] = useState("")
 
@@ -83,7 +81,7 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
       return
     }
 
-    setIsProcessing(true)
+    //setIsProcessing(true)
 
     try {
       const formData = new FormData()
@@ -138,12 +136,12 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
       console.error("Error processing audio:", error)
       alert("Error processing audio. Please try again.")
     } finally {
-      setIsProcessing(false)
+      //setIsProcessing(false)
     }
   }
 
   return (
-    <div className="space-y-6">
+    <div className="fixed bottom-0 left-0 right-0 bg-slate-50 border-t border-slate-200 p-4 space-y-6">
       {/* Recording Controls */}
       <div className="flex flex-col items-center space-y-4">
             <div className="flex items-center space-x-4">
@@ -153,19 +151,20 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
                   Start Recording
                 </Button>
               ) : (
-                <Button onClick={stopRecording} size="lg" variant="destructive">
-                  <Square className="h-5 w-5 mr-2" />
-                  Stop Recording
+                <Button onClick={stopRecording} size="lg" className="bg-white hover:bg-slate-50 text-slate-600">
+                  <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium">Recording...</span>
                 </Button>
               )}
             </div>
-
+{/*
             {isRecording && (
               <div className="flex items-center space-x-2 text-red-500">
                 <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
                 <span className="text-sm font-medium">Recording...</span>
               </div>
-            )}
+            
+            )}*/}
           </div>
 
       {/* Audio Playback */}
