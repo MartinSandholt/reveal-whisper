@@ -43,6 +43,11 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
         setAudioBlob(blob)
         setAudioUrl(URL.createObjectURL(blob))
         stream.getTracks().forEach((track) => track.stop())
+        setTimeout(() => {
+          if (blob.size > 0) {
+            processAudio(blob)
+          }
+        }, 0)
       }
 
       mediaRecorder.start()
@@ -71,9 +76,10 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
     }
   }
 
-  const processAudio = async () => {
-    if (!audioBlob || !title.trim()) {
-      alert("Please provide a title and record audio first.")
+  const processAudio = async (blobArg?: Blob) => {
+    const blobToUse = blobArg || audioBlob;
+    if (!blobToUse) {
+      alert("Please record audio first.")
       return
     }
 
@@ -81,7 +87,7 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
 
     try {
       const formData = new FormData()
-      formData.append("audio", audioBlob, "recording.wav")
+      formData.append("audio", blobToUse, "recording.wav")
       formData.append("title", title)
       formData.append("clientName", clientName)
 
@@ -96,9 +102,22 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
 
       const result = await response.json()
 
+      // Generate title from topic if not provided
+      let generatedTitle = title.trim()
+      if (!generatedTitle) {
+        if (result.topic && typeof result.topic === 'string') {
+          generatedTitle = result.topic.slice(0, 50) || 'Untitled Note'
+        } else if (result.summary && typeof result.summary === 'string') {
+          const firstSentence = result.summary.split(/[.!?]/)[0].trim()
+          generatedTitle = firstSentence.slice(0, 50) || 'Untitled Note'
+        } else {
+          generatedTitle = 'Untitled Note'
+        }
+      }
+
       const note: Note = {
         id: Date.now().toString(),
-        title: title.trim(),
+        title: generatedTitle,
         clientName: clientName.trim() || undefined,
         transcript: result.transcript,
         summary: result.summary,
@@ -165,10 +184,10 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
         </Card>
       )}
 
-      {/* Note Details */}
+      {/* Note Details 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="title">Note Title *</Label>
+          <Label htmlFor="title">Note Title (Optional)</Label>
           <Input
             id="title"
             value={title}
@@ -189,11 +208,11 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
           />
         </div>
       </div>
-
-      {/* Process Button */}
+      */}
+      {/* Process Button 
       <Button
-        onClick={processAudio}
-        disabled={!audioBlob || !title.trim() || isProcessing}
+        onClick={() => processAudio()}
+        disabled={!audioBlob || isProcessing}
         className="w-full"
         size="lg"
       >
@@ -206,6 +225,7 @@ export default function AudioRecorder({ onSaveNote }: AudioRecorderProps) {
           "Transcribe & Analyze"
         )}
       </Button>
+      */}
     </div>
   )
 }

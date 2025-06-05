@@ -37,6 +37,7 @@ You are an AI assistant helping a broker analyze a conversation transcript. Plea
 
 1. A concise summary of the conversation (2-3 sentences)
 2. A list of specific follow-up items or action items that the broker should address
+3. The main topic of the conversation as a short phrase (3-8 words)
 
 Here is the transcript:
 ${transcript}
@@ -44,7 +45,8 @@ ${transcript}
 Always format your response as JSON with the following structure:
 {
   "summary": "Your summary here",
-  "followUpItems": ["Item 1", "Item 2", "Item 3"]
+  "followUpItems": ["Item 1", "Item 2", "Item 3"],
+  "topic": "Main topic as a short phrase"
 }
 `
 
@@ -54,7 +56,7 @@ Always format your response as JSON with the following structure:
       temperature: 0.1,
     })
 
-    let analysis: LLMAnalysis
+    let analysis: LLMAnalysis & { topic?: string }
     try {
       analysis = extractJsonFromLLMResponse(analysisResult.text)
     } catch (parseError) {
@@ -63,6 +65,7 @@ Always format your response as JSON with the following structure:
       analysis = {
         summary: "Parsing did not work",
         followUpItems: ["Review transcript manually", "Follow up with client"],
+        topic: "General Conversation"
       }
     }
 
@@ -70,6 +73,7 @@ Always format your response as JSON with the following structure:
       transcript,
       summary: analysis.summary,
       followUpItems: analysis.followUpItems || [],
+      topic: analysis.topic || "General Conversation",
     })
   } catch (error) {
     console.error("Error processing audio:", error)

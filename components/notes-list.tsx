@@ -53,7 +53,7 @@ export default function NotesList({ notes, onDeleteNote }: NotesListProps) {
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-2">
-                            <CardTitle className="text-lg">{note.title}</CardTitle>
+                            <CardTitle className="text-lg">{note.title || "Untitled Note"}</CardTitle>
                             <div className="flex items-center space-x-2">
                               <Button
                                 onClick={(e) => {

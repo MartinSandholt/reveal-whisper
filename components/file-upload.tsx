@@ -37,8 +37,8 @@ export default function FileUpload({ onSaveNote }: FileUploadProps) {
   }
 
   const processFile = async () => {
-    if (!selectedFile || !title.trim()) {
-      alert("Please provide a title and select an audio file.")
+    if (!selectedFile) {
+      alert("Please select an audio file.")
       return
     }
 
@@ -63,7 +63,7 @@ export default function FileUpload({ onSaveNote }: FileUploadProps) {
 
       const note: Note = {
         id: Date.now().toString(),
-        title: title.trim(),
+        title: title.trim() || "Untitled Note",
         clientName: clientName.trim() || undefined,
         transcript: result.transcript,
         summary: result.summary,
@@ -124,7 +124,7 @@ export default function FileUpload({ onSaveNote }: FileUploadProps) {
       {/* Note Details */}
       <div className="space-y-4">
         <div>
-          <Label htmlFor="upload-title">Note Title *</Label>
+          <Label htmlFor="upload-title">Note Title (Optional)</Label>
           <Input
             id="upload-title"
             value={title}
@@ -149,7 +149,7 @@ export default function FileUpload({ onSaveNote }: FileUploadProps) {
       {/* Process Button */}
       <Button
         onClick={processFile}
-        disabled={!selectedFile || !title.trim() || isProcessing}
+        disabled={!selectedFile || isProcessing}
         className="w-full"
         size="lg"
       >

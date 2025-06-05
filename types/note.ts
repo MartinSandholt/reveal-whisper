@@ -1,6 +1,6 @@
 export interface Note {
   id: string
-  title: string
+  title?: string
   clientName?: string
   transcript: string
   summary: string
