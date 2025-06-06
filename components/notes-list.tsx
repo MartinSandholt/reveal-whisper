@@ -41,10 +41,10 @@ export default function NotesList({ notes, onDeleteNote }: NotesListProps) {
             //const isExpanded = expandedNotes.has(note.id)
             return (
               <Collapsible key={note.id}>
-                <Card className="border border-gray-200">
+                <Card className="cursor-pointer border bg-white  border-gray-200 p-0">
                   <CollapsibleTrigger asChild>
                     <CardHeader
-                      className="cursor-pointer hover:bg-gray-50 transition-colors"
+                      className="p-4"
                       onClick={() => toggleExpanded(note.id)}
                     >
                       <div className="flex items-center justify-between">
@@ -109,7 +109,7 @@ export default function NotesList({ notes, onDeleteNote }: NotesListProps) {
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2 mt-4">
+                      <div className="flex items-center space-x-2 mt-4 p-4">
                               <Button
                                 onClick={(e) => {
                                   e.stopPropagation()
@@ -117,7 +117,7 @@ export default function NotesList({ notes, onDeleteNote }: NotesListProps) {
                                 }}
                                 variant="ghost"
                                 size="sm"
-                                className="text-red-500 hover:text-red-700"
+                                className="text-red-500 hover:text-red-700 cursor-pointer"
                               >
                                 <Trash2 className="h-4 w-4" />Delete note
                               </Button>
